@@ -1102,7 +1102,8 @@ int main(int argc, char ** argv) {
         {
             std::string results = output_str(ctx, params, pcmf32s);
             json jres = json{
-                {"text", results}
+                {"text", results},
+                {"detected_language", whisper_lang_str(whisper_full_lang_id(ctx))}
             };
             res.set_content(jres.dump(-1, ' ', false, json::error_handler_t::replace),
                             "application/json");

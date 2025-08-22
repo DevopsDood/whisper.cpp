@@ -26,6 +26,7 @@ def get_model_path():
             import subprocess
             subprocess.run(["nvidia-smi"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
             # If nvidia-smi is available, we're on NVIDIA system
+            # Use the regular ggml model (not CoreML) for optimal performance on NVIDIA hardware
             return "models/ggml-large-v3-turbo.bin"
         except (subprocess.CalledProcessError, FileNotFoundError):
             # No NVIDIA GPU detected or nvidia-smi not available

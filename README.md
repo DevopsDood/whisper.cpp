@@ -1,6 +1,6 @@
 # Whisper.cpp Proxy Service
 
-A minimal microservice that runs two instances of whisper.cpp with a proxy that alternates between them and restarts one every 5th transcription to avoid the bug that causes failure after ~10-20 transcriptions.
+A minimal microservice that runs two instances of whisper.cpp with a proxy that alternates between them and restarts one every 5th transcription to avoid the bug that causes a replay of prior transcription failure after ~10-20 transcriptions.
 
 ## Architecture
 
@@ -54,6 +54,12 @@ The service can be configured by modifying:
 ## Model Download
 
 The service automatically downloads the `ggml-large-v3-turbo.bin` model from Hugging Face on first run.
+
+## NVIDIA Support
+
+For NVIDIA systems, the proxy automatically detects the presence of an NVIDIA GPU and ensures that 
+the correct ggml model (non-CoreML) is used for optimal performance. This branch contains specific 
+configurations to ensure compatibility with NVIDIA hardware.
 
 ## Troubleshooting
 

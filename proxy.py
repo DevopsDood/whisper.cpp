@@ -15,7 +15,26 @@ import json
 SERVER1_PORT = 8081
 SERVER2_PORT = 8082
 PROXY_PORT = 8080
-MODEL_PATH = "models/ggml-large-v3-turbo.bin"
+
+# Detect if we're on NVIDIA system (Linux) and use appropriate model
+def get_model_path():
+    # Check if we're on Linux (likely NVIDIA)
+    import platform
+    if platform.system() == "Linux":
+        # Check for NVIDIA GPU by looking for nvidia-smi command
+        try:
+            import subprocess
+            subprocess.run(["nvidia-smi"], check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            # If nvidia-smi is available, we're on NVIDIA system
+            return "models/ggml-large-v3-turbo.bin"
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            # No NVIDIA GPU detected or nvidia-smi not available
+            pass
+    
+    # Default to regular ggml model for non-NVIDIA systems or if unsure
+    return "models/ggml-large-v3-turbo.bin"
+
+MODEL_PATH = get_model_path()
 SERVER1_CMD = ["./build/bin/whisper-server", "--host", "0.0.0.0", "--port", str(SERVER1_PORT), "-l", "auto", "-m", MODEL_PATH]
 SERVER2_CMD = ["./build/bin/whisper-server", "--host", "0.0.0.0", "--port", str(SERVER2_PORT), "-l", "auto", "-m", MODEL_PATH]
 

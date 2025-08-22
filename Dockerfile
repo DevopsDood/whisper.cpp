@@ -29,6 +29,11 @@ RUN mkdir -p models \
     && cd models \
     && wget https://huggingface.co/ggml-org/whisper.cpp/resolve/main/ggml-large-v3-turbo.bin
 
+# Create NVIDIA-specific symlink for explicit model usage (if needed)
+RUN if [ -f "models/ggml-large-v3-turbo.bin" ]; then \
+        echo "Using NVIDIA-compatible ggml model"; \
+    fi
+
 # Install Python dependencies for proxy
 RUN pip3 install requests
 

@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  whisper-proxy:
+    build: .
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./models:/app/models
+    networks:
+      - whisper-network
+
+  # We don't actually need to define individual server containers since
+  # they'll be run from within the proxy container
+
+networks:
+  whisper-network:
+    driver: bridge
